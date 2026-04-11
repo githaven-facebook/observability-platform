@@ -1,0 +1,41 @@
+storage:
+  clickhouse_dsn: "clickhouse://default:@clickhouse:9000/default"
+  retention_days: 7
+  max_open_conns: 5
+  max_idle_conns: 2
+  conn_max_lifetime: 5m
+  dial_timeout: 10s
+
+kafka:
+  brokers:
+    - "kafka:29092"
+  consumer_group: "observability-alertmanager"
+
+alerting:
+  evaluation_interval: 30s
+  rules_file: "/etc/observability/alert-rules.yaml"
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  notification_channels:
+    - name: pagerduty
+      type: pagerduty
+      settings:
+        integration_key: "${PAGERDUTY_INTEGRATION_KEY}"
+    - name: slack
+      type: slack
+      settings:
+        webhook_url: "${SLACK_WEBHOOK_URL}"
+        channel: "#alerts"
+    - name: email
+      type: email
+      settings:
+        smtp_addr: "smtp.internal:587"
+        from: "alerts@observability.internal"
+        to: "oncall@observability.internal"
+        username: "${SMTP_USERNAME}"
+        password: "${SMTP_PASSWORD}"
+
+query:
+  port: 9093
+  max_query_duration: 30s
