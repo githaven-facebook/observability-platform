@@ -1,0 +1,66 @@
+run:
+  timeout: 5m
+  go: "1.22"
+
+linters:
+  enable:
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - gofmt
+    - goimports
+    - misspell
+    - revive
+    - gosec
+    - bodyclose
+    - contextcheck
+    - noctx
+    - exhaustive
+    - godot
+    - gocritic
+    - cyclop
+    - dupl
+    - funlen
+    - gocognit
+    - nestif
+
+linters-settings:
+  cyclop:
+    max-complexity: 15
+  funlen:
+    lines: 100
+    statements: 60
+  gocognit:
+    min-complexity: 20
+  dupl:
+    threshold: 150
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+  revive:
+    rules:
+      - name: exported
+        arguments:
+          - checkPrivateReceivers
+          - sayRepetitiveInsteadOfStutters
+  gosec:
+    excludes:
+      - G304
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - dupl
+        - funlen
+        - gosec
+    - path: cmd/
+      linters:
+        - funlen
+  max-issues-per-linter: 50
+  max-same-issues: 10
