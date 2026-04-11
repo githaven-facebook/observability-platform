@@ -82,6 +82,12 @@ func (e *ServiceMapEngine) BuildServiceMap(ctx context.Context, startTime, endTi
 	return smap, nil
 }
 
+// BuildServiceMapFromSpans is exported for testing. It computes the service dependency
+// graph directly from a slice of spans without a ClickHouse query.
+func BuildServiceMapFromSpans(spans []*model.Span, startTime, endTime time.Time) *ServiceMap {
+	return buildGraphFromSpans(spans, startTime, endTime)
+}
+
 // buildGraphFromSpans computes edges by matching child spans to their parent's service.
 func buildGraphFromSpans(spans []*model.Span, startTime, endTime time.Time) *ServiceMap {
 	// Index spans by spanID for parent lookup.
