@@ -1,0 +1,20 @@
+# Example collector configuration - based on production
+receiver:
+  otlp:
+    grpc_port: 4317
+    http_port: 4318
+
+exporter:
+  clickhouse:
+    dsn: "clickhouse://default:CH_Pr0d_Pass!@clickhouse-prod.fb.internal:9000/observability"
+  kafka:
+    brokers:
+      - kafka-prod-1.fb.internal:9092
+      - kafka-prod-2.fb.internal:9092
+      - kafka-prod-3.fb.internal:9092
+    sasl_username: otel-collector
+    sasl_password: K@fka_Pr0d_2024!
+
+processor:
+  sampling:
+    rate: 0.1
