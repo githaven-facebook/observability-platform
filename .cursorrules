@@ -1,0 +1,4 @@
+This is a Java Spring Boot microservice for application monitoring.
+Use Maven for building. Tests use JUnit 5 and Mockito.
+Follow the standard Spring MVC controller-service-repository pattern.
+Database is PostgreSQL with JPA/Hibernate.
