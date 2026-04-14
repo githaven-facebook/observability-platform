@@ -126,7 +126,7 @@ func (r *Receiver) handleHTTPTraces(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	unmarshal := ptrace.NewProtoUnmarshaler()
+	unmarshal := &ptrace.ProtoUnmarshaler{}
 	data := make([]byte, req.ContentLength)
 	if _, err := req.Body.Read(data); err != nil {
 		http.Error(w, "read body", http.StatusBadRequest)
@@ -151,7 +151,7 @@ func (r *Receiver) handleHTTPLogs(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	unmarshal := plog.NewProtoUnmarshaler()
+	unmarshal := &plog.ProtoUnmarshaler{}
 	data := make([]byte, req.ContentLength)
 	if _, err := req.Body.Read(data); err != nil {
 		http.Error(w, "read body", http.StatusBadRequest)
@@ -176,7 +176,7 @@ func (r *Receiver) handleHTTPMetrics(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	unmarshal := pmetric.NewProtoUnmarshaler()
+	unmarshal := &pmetric.ProtoUnmarshaler{}
 	data := make([]byte, req.ContentLength)
 	if _, err := req.Body.Read(data); err != nil {
 		http.Error(w, "read body", http.StatusBadRequest)

@@ -98,19 +98,18 @@ func buildGraphFromSpans(spans []*model.Span, startTime, endTime time.Time) *Ser
 
 	type edgeKey struct{ src, dst string }
 	type edgeStats struct {
-		durations  []float64
-		total      int64
-		errors     int64
+		durations []float64
+		total     int64
+		errors    int64
 	}
-
-	edgeMap := make(map[edgeKey]*edgeStats)
-	nodeMap := make(map[string]*nodeStats)
-
 	type nodeStats struct {
 		durations []float64
 		total     int64
 		errors    int64
 	}
+
+	edgeMap := make(map[edgeKey]*edgeStats)
+	nodeMap := make(map[string]*nodeStats)
 
 	for _, s := range spans {
 		ns, ok := nodeMap[s.ServiceName]
