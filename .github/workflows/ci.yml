@@ -18,11 +18,14 @@ jobs:
           go-version: "1.22"
           cache: true
 
+      - name: Tidy modules
+        run: go mod tidy
+
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
           version: v1.59
-          args: --timeout=5m
+          args: --timeout=5m ./...
 
   test:
     name: Unit Tests
@@ -35,8 +38,8 @@ jobs:
           go-version: "1.22"
           cache: true
 
-      - name: Download dependencies
-        run: go mod download
+      - name: Tidy modules
+        run: go mod tidy
 
       - name: Run unit tests
         run: go test ./tests/unit/... ./internal/... -v -race -coverprofile=coverage.out -timeout 5m
@@ -58,6 +61,9 @@ jobs:
         with:
           go-version: "1.22"
           cache: true
+
+      - name: Tidy modules
+        run: go mod tidy
 
       - name: Build collector
         run: go build -trimpath -ldflags="-s -w" -o bin/collector ./cmd/collector/...
@@ -96,6 +102,9 @@ jobs:
         with:
           go-version: "1.22"
           cache: true
+
+      - name: Tidy modules
+        run: go mod tidy
 
       - name: Run integration tests
         env:
