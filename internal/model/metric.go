@@ -94,9 +94,9 @@ const (
 // SelectResolution picks the best pre-aggregated resolution for the given time range.
 func SelectResolution(rangeSeconds int64) DownsampleResolution {
 	switch {
-	case rangeSeconds > 7*24*3600: // > 7 days
+	case rangeSeconds >= 24*3600: // >= 1 day
 		return Resolution1Day
-	case rangeSeconds > 24*3600: // > 1 day
+	case rangeSeconds >= 6*3600: // >= 6 hours
 		return Resolution1Hour
 	case rangeSeconds > 3600: // > 1 hour
 		return Resolution5Min
