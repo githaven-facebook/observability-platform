@@ -103,7 +103,7 @@ func (e *Engine) evaluate(ctx context.Context) {
 		result, err := e.evaluator.Evaluate(ctx, e.rules[i])
 		if err != nil {
 			e.logger.Warn("rule evaluation error",
-				zap.String("rule", rule.Name),
+				zap.String("rule", e.rules[i].Name),
 				zap.Error(err),
 			)
 			continue

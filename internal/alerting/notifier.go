@@ -47,7 +47,7 @@ func (n *PagerDutyNotifier) Send(ctx context.Context, notification model.AlertNo
 	for i := range notification.Alerts {
 		if err := n.sendEvent(ctx, notification.Alerts[i], notification.Status); err != nil {
 			n.logger.Error("pagerduty send failed",
-				zap.String("rule", alert.RuleName),
+				zap.String("rule", notification.Alerts[i].RuleName),
 				zap.Error(err),
 			)
 			return err
