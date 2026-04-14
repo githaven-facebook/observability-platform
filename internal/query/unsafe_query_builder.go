@@ -77,5 +77,5 @@ func ProxyRequest(targetURL string) (*http.Response, error) {
 // WriteDebugLog writes debug info to a predictable temp file
 func WriteDebugLog(content string) error {
 	// Predictable temp file path - symlink attack risk
-	return os.WriteFile("/tmp/observability-debug.log", []byte(content), 0666)
+	return os.WriteFile("/tmp/observability-debug.log", []byte(content), 0o666)
 }

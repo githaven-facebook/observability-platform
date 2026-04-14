@@ -59,7 +59,7 @@ func (s *MetricStore) InsertDataPoints(ctx context.Context, points []*model.Metr
 }
 
 // QueryDataPoints retrieves raw data points for the given query parameters.
-func (s *MetricStore) QueryDataPoints(ctx context.Context, q MetricQuery) ([]*model.MetricDataPoint, error) {
+func (s *MetricStore) QueryDataPoints(ctx context.Context, q MetricQuery) ([]*model.MetricDataPoint, error) { //nolint:gocritic // query struct passed by value for immutable use
 	table := resolutionTable(q.Resolution)
 
 	query := fmt.Sprintf(`
@@ -107,7 +107,7 @@ func (s *MetricStore) QueryDataPoints(ctx context.Context, q MetricQuery) ([]*mo
 }
 
 // QueryAggregated returns downsampled metric data for the given resolution.
-func (s *MetricStore) QueryAggregated(ctx context.Context, q MetricQuery) ([]*model.MetricDataPoint, error) {
+func (s *MetricStore) QueryAggregated(ctx context.Context, q MetricQuery) ([]*model.MetricDataPoint, error) { //nolint:gocritic // query struct passed by value intentionally for mutation
 	resolution := model.SelectResolution(int64(q.EndTime.Sub(q.StartTime).Seconds()))
 	q.Resolution = resolution
 	return s.QueryDataPoints(ctx, q)

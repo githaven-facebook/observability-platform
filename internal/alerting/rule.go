@@ -60,7 +60,7 @@ func (l *RuleLoader) Load() ([]model.AlertRule, error) {
 	return rules, nil
 }
 
-func validateRule(r model.AlertRule) error {
+func validateRule(r model.AlertRule) error { //nolint:gocritic // AlertRule is a simple value type used for validation
 	if r.Name == "" {
 		return fmt.Errorf("name is required")
 	}

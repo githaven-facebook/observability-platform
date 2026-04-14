@@ -162,5 +162,5 @@ func writeJSON(w http.ResponseWriter, v interface{}) {
 }
 
 func errorf(format string, args ...interface{}) error {
-	return fmt.Errorf(format, args...) //nolint:goerr113
+	return fmt.Errorf(format, args...) //nolint:goerr113 // dynamic error formatting required for caller context
 }

@@ -46,7 +46,7 @@ type MetricResultItem struct {
 }
 
 // Query parses a simple PromQL-subset query expression and returns results.
-func (e *MetricQueryEngine) Query(ctx context.Context, params QueryParams) (*QueryResult, error) {
+func (e *MetricQueryEngine) Query(ctx context.Context, params QueryParams) (*QueryResult, error) { //nolint:gocritic // params is a query value type copied intentionally
 	if params.EndTime.IsZero() {
 		params.EndTime = time.Now()
 	}

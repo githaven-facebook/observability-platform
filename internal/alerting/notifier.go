@@ -43,9 +43,9 @@ func NewPagerDutyNotifier(integrationKey string, logger *zap.Logger) *PagerDutyN
 func (n *PagerDutyNotifier) Name() string { return "pagerduty" }
 
 // Send dispatches a PagerDuty v2 event for each firing alert in the notification.
-func (n *PagerDutyNotifier) Send(ctx context.Context, notification model.AlertNotification) error {
-	for _, alert := range notification.Alerts {
-		if err := n.sendEvent(ctx, alert, notification.Status); err != nil {
+func (n *PagerDutyNotifier) Send(ctx context.Context, notification model.AlertNotification) error { //nolint:gocritic // AlertNotification passed by value per NotificationSender interface
+	for i := range notification.Alerts {
+		if err := n.sendEvent(ctx, notification.Alerts[i], notification.Status); err != nil {
 			n.logger.Error("pagerduty send failed",
 				zap.String("rule", alert.RuleName),
 				zap.Error(err),
@@ -56,7 +56,7 @@ func (n *PagerDutyNotifier) Send(ctx context.Context, notification model.AlertNo
 	return nil
 }
 
-func (n *PagerDutyNotifier) sendEvent(ctx context.Context, alert model.AlertInstance, state model.AlertState) error {
+func (n *PagerDutyNotifier) sendEvent(ctx context.Context, alert model.AlertInstance, state model.AlertState) error { //nolint:gocritic // AlertInstance passed by value for immutable use
 	action := "trigger"
 	if state == model.AlertStateResolved {
 		action = "resolve"
@@ -123,14 +123,15 @@ func NewSlackNotifier(webhookURL, channel string, logger *zap.Logger) *SlackNoti
 func (n *SlackNotifier) Name() string { return "slack" }
 
 // Send posts a Slack message with rich block formatting for the alert notification.
-func (n *SlackNotifier) Send(ctx context.Context, notification model.AlertNotification) error {
+func (n *SlackNotifier) Send(ctx context.Context, notification model.AlertNotification) error { //nolint:gocritic // AlertNotification passed by value per NotificationSender interface
 	color := "#e01e5a" // red for firing
 	if notification.Status == model.AlertStateResolved {
 		color = "#2eb67d" // green for resolved
 	}
 
 	var alertTexts []string
-	for _, a := range notification.Alerts {
+	for i := range notification.Alerts {
+		a := notification.Alerts[i]
 		alertTexts = append(alertTexts, fmt.Sprintf("*%s* — %s (value: %.4f)", a.RuleName, a.Severity, a.Value))
 	}
 
@@ -199,11 +200,12 @@ func NewEmailNotifier(smtpAddr, from string, to []string, username, password str
 func (n *EmailNotifier) Name() string { return "email" }
 
 // Send sends an email summarising the alert notification.
-func (n *EmailNotifier) Send(_ context.Context, notification model.AlertNotification) error {
+func (n *EmailNotifier) Send(_ context.Context, notification model.AlertNotification) error { //nolint:gocritic // AlertNotification passed by value per NotificationSender interface
 	subject := fmt.Sprintf("[%s] %d alert(s) firing", strings.ToUpper(string(notification.Status)), len(notification.Alerts))
 	var body strings.Builder
 	body.WriteString(subject + "\r\n\r\n")
-	for _, a := range notification.Alerts {
+	for i := range notification.Alerts {
+		a := notification.Alerts[i]
 		body.WriteString(fmt.Sprintf("Alert: %s\r\nSeverity: %s\r\nValue: %.4f\r\nStarted: %s\r\n\r\n",
 			a.RuleName, a.Severity, a.Value, a.StartsAt.Format(time.RFC3339)))
 	}
@@ -241,7 +243,7 @@ func (n *GroupingNotifier) Name() string { return n.inner.Name() }
 
 // Send dispatches the notification only if enough time has passed since the last send
 // for the same group key.
-func (n *GroupingNotifier) Send(ctx context.Context, notification model.AlertNotification) error {
+func (n *GroupingNotifier) Send(ctx context.Context, notification model.AlertNotification) error { //nolint:gocritic // AlertNotification passed by value per NotificationSender interface
 	key := notification.GroupKey
 	if last, ok := n.lastSent[key]; ok && time.Since(last) < n.repeatInterval {
 		n.logger.Debug("suppressing repeat notification",

@@ -64,7 +64,7 @@ func (s *LogStore) InsertLogs(ctx context.Context, logs []*model.LogRecord) erro
 }
 
 // QueryLogs searches for log records matching the given filter criteria.
-func (s *LogStore) QueryLogs(ctx context.Context, q LogQuery) ([]*model.LogRecord, error) {
+func (s *LogStore) QueryLogs(ctx context.Context, q LogQuery) ([]*model.LogRecord, error) { //nolint:gocritic // query struct passed by value for immutable use
 	query := `
 		SELECT timestamp, observed_timestamp, severity, severity_text,
 		       body, service_name, trace_id, span_id, trace_flags,

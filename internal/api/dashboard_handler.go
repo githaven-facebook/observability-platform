@@ -56,7 +56,7 @@ func (h *DashboardHandler) GrafanaTest(w http.ResponseWriter, r *http.Request) {
 }
 
 // GrafanaQuery handles POST /api/v1/grafana/query.
-func (h *DashboardHandler) GrafanaQuery(w http.ResponseWriter, r *http.Request) {
+func (h *DashboardHandler) GrafanaQuery(w http.ResponseWriter, r *http.Request) { //nolint:gocognit // query handler requires multiple parse steps
 	var req grafanaQueryRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		jsonError(w, "invalid request body", http.StatusBadRequest)

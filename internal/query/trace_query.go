@@ -38,7 +38,7 @@ type TraceSearchParams struct {
 }
 
 // SearchTraces finds traces matching the given criteria, returning summaries.
-func (e *TraceQueryEngine) SearchTraces(ctx context.Context, params TraceSearchParams) ([]model.TraceSummary, error) {
+func (e *TraceQueryEngine) SearchTraces(ctx context.Context, params TraceSearchParams) ([]model.TraceSummary, error) { //nolint:gocritic // params is a query value type copied intentionally
 	if params.Limit <= 0 {
 		params.Limit = 100
 	}
@@ -100,7 +100,7 @@ func reconstructTimeline(trace *model.Trace) {
 
 // ScatterGatherQuery executes a trace query across multiple time partitions in parallel
 // and merges results sorted by start time. This is useful for very large time ranges.
-func (e *TraceQueryEngine) ScatterGatherQuery(ctx context.Context, params TraceSearchParams) ([]model.TraceSummary, error) {
+func (e *TraceQueryEngine) ScatterGatherQuery(ctx context.Context, params TraceSearchParams) ([]model.TraceSummary, error) { //nolint:gocritic // params is a query value type copied intentionally
 	const partitionWindow = 6 * time.Hour
 	if params.EndTime.Sub(params.StartTime) <= partitionWindow {
 		return e.SearchTraces(ctx, params)

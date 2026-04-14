@@ -99,8 +99,8 @@ func (e *Engine) runLoop(ctx context.Context) {
 }
 
 func (e *Engine) evaluate(ctx context.Context) {
-	for _, rule := range e.rules {
-		result, err := e.evaluator.Evaluate(ctx, rule)
+	for i := range e.rules {
+		result, err := e.evaluator.Evaluate(ctx, e.rules[i])
 		if err != nil {
 			e.logger.Warn("rule evaluation error",
 				zap.String("rule", rule.Name),
@@ -176,7 +176,7 @@ func (e *Engine) processResult(ctx context.Context, result *EvaluationResult) {
 	e.mu.Unlock()
 }
 
-func (e *Engine) dispatch(ctx context.Context, alert model.AlertInstance) {
+func (e *Engine) dispatch(ctx context.Context, alert model.AlertInstance) { //nolint:gocritic // AlertInstance is copied intentionally for safe concurrent use
 	notification := model.AlertNotification{
 		GroupKey:    alert.Fingerprint,
 		Status:      alert.State,

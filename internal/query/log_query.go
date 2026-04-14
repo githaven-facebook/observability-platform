@@ -35,7 +35,7 @@ type LogSearchParams struct {
 }
 
 // SearchLogs finds log records matching the given filter parameters.
-func (e *LogQueryEngine) SearchLogs(ctx context.Context, params LogSearchParams) ([]*model.LogRecord, error) {
+func (e *LogQueryEngine) SearchLogs(ctx context.Context, params LogSearchParams) ([]*model.LogRecord, error) { //nolint:gocritic // params is a query value type copied intentionally
 	if params.Limit <= 0 {
 		params.Limit = 200
 	}

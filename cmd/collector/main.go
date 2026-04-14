@@ -33,7 +33,7 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("build logger: %w", err)
 	}
-	defer logger.Sync() //nolint:errcheck
+	defer logger.Sync() //nolint:errcheck // sync errors are non-critical on shutdown
 
 	cfg, err := config.Load(*configPath)
 	if err != nil {

@@ -58,7 +58,7 @@ func NewLogProcessor(cfg *config.KafkaConfig, logStore *clickhouse.LogStore, log
 }
 
 // Run starts consuming log messages until the context is cancelled.
-func (p *LogProcessor) Run(ctx context.Context) error {
+func (p *LogProcessor) Run(ctx context.Context) error { //nolint:gocognit // event loop with multiple select cases
 	p.logger.Info("log processor started", zap.String("topic", p.cfg.LogsTopic))
 
 	var batch []*model.LogRecord

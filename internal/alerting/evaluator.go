@@ -33,7 +33,7 @@ func NewEvaluator(metricEngine *query.MetricQueryEngine, logger *zap.Logger) *Ev
 }
 
 // Evaluate assesses a single alert rule and returns whether it is currently firing.
-func (e *Evaluator) Evaluate(ctx context.Context, rule model.AlertRule) (*EvaluationResult, error) {
+func (e *Evaluator) Evaluate(ctx context.Context, rule model.AlertRule) (*EvaluationResult, error) { //nolint:gocritic // rule is an interface-like value type
 	now := time.Now()
 	lookback := 5 * time.Minute
 	if rule.Duration > 0 {

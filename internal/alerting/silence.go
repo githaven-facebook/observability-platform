@@ -28,7 +28,7 @@ func NewSilenceManager(logger *zap.Logger) *SilenceManager {
 }
 
 // Create adds a new silence and returns its assigned ID.
-func (m *SilenceManager) Create(silence model.Silence) (string, error) {
+func (m *SilenceManager) Create(silence model.Silence) (string, error) { //nolint:gocritic // Silence is passed by value to allow mutation before storage
 	if err := validateSilence(silence); err != nil {
 		return "", fmt.Errorf("invalid silence: %w", err)
 	}
@@ -50,7 +50,7 @@ func (m *SilenceManager) Create(silence model.Silence) (string, error) {
 }
 
 // Update replaces an existing silence's fields.
-func (m *SilenceManager) Update(id string, updated model.Silence) error {
+func (m *SilenceManager) Update(id string, updated model.Silence) error { //nolint:gocritic // Silence is passed by value to allow mutation before storage
 	m.mu.Lock()
 	defer m.mu.Unlock()
 

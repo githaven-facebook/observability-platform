@@ -95,7 +95,7 @@ func (s *TraceStore) GetTrace(ctx context.Context, traceID string) (*model.Trace
 }
 
 // QuerySpans searches for spans matching the given filter criteria.
-func (s *TraceStore) QuerySpans(ctx context.Context, q SpanQuery) ([]*model.Span, error) {
+func (s *TraceStore) QuerySpans(ctx context.Context, q SpanQuery) ([]*model.Span, error) { //nolint:gocritic // query struct passed by value for immutable use
 	query := `
 		SELECT trace_id, span_id, parent_span_id, trace_state, service_name, operation_name,
 		       start_time, end_time, duration_ms, status, status_message, kind,
@@ -139,7 +139,7 @@ func (s *TraceStore) QuerySpans(ctx context.Context, q SpanQuery) ([]*model.Span
 }
 
 // GetTraceSummaries returns lightweight trace summaries for list views.
-func (s *TraceStore) GetTraceSummaries(ctx context.Context, q SpanQuery) ([]model.TraceSummary, error) {
+func (s *TraceStore) GetTraceSummaries(ctx context.Context, q SpanQuery) ([]model.TraceSummary, error) { //nolint:gocritic // query struct passed by value for immutable use
 	rows, err := s.client.Conn().Query(ctx, `
 		SELECT
 			trace_id,

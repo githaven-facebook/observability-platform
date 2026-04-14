@@ -130,7 +130,7 @@ func (c *Config) validate() error {
 }
 
 // applyDefaults fills in zero values with sensible defaults.
-func (c *Config) applyDefaults() {
+func (c *Config) applyDefaults() { //nolint:gocognit // many fields require individual defaults
 	if c.Collector.OTLP.GRPCPort == 0 {
 		c.Collector.OTLP.GRPCPort = 4317
 	}
