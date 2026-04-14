@@ -120,7 +120,6 @@ func (a *TraceAnalyzer) DetectLatencyAnomalies(
 		return nil, err
 	}
 
-	type opKey struct{ svc, op string }
 	baselineP99 := computeP99ByOperation(baselineSpans)
 	currentP99 := computeP99ByOperation(currentSpans)
 
@@ -195,15 +194,15 @@ func detectErrorPatterns(spans []*model.Span) []ErrorPattern {
 }
 
 func computeP99ByOperation(spans []*model.Span) map[struct{ svc, op string }]float64 {
-	type key struct{ svc, op string }
-	durations := make(map[key][]float64)
+	type opKey = struct{ svc, op string }
+	durations := make(map[opKey][]float64)
 
 	for _, s := range spans {
-		k := key{svc: s.ServiceName, op: s.OperationName}
+		k := opKey{svc: s.ServiceName, op: s.OperationName}
 		durations[k] = append(durations[k], float64(s.DurationMs))
 	}
 
-	result := make(map[key]float64, len(durations))
+	result := make(map[opKey]float64, len(durations))
 	for k, d := range durations {
 		result[k] = p99(d)
 	}
